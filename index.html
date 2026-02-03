@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro Isaac</title>
+    <style>
+        body { font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; background-color: #f0f2f5; margin: 0; }
+        .card { background: white; padding: 2rem; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); width: 350px; text-align: center; }
+        input { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box; }
+        button { width: 100%; padding: 10px; background-color: #007bff; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; }
+        button:hover { background-color: #0056b3; }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <h2>Nuevo Contacto</h2>
+    <input type="text" id="nombre" placeholder="Nombre completo">
+    <input type="text" id="telefono" placeholder="Teléfono">
+    <button onclick="enviarDatos()">Guardar en la Nube</button>
+</div>
+
+<script>
+    function enviarDatos() {
+        const nombre = document.getElementById('nombre').value;
+        const telefono = document.getElementById('telefono').value;
+
+        // USA TU URL AQUÍ
+        const url = "https://ifxwuycsaipddq76bxkpfadtby0fdczy.lambda-url.us-east-2.on.aws/";
+
+        if (!nombre || !telefono) {
+            alert("Por favor llena todos los campos");
+            return;
+        }
+
+        fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                "Nombre": nombre,
+                "Telefono": telefono
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log(data);
+            alert(data.mensaje || "¡Éxito!: Contacto guardado");
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert("Error al conectar con AWS");
+        });
+    }
+</script>
+
+</body>
+</html>
